@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Web Projects | Creative Flow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Same modal style as gallery -->
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(0,0,0,0.94);
+        }
+        .modal-content {
+            max-width: 94%;
+            max-height: 94vh;
+            object-fit: contain;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 48px;
+            cursor: pointer;
+        }
+        .modal-close:hover { color: #ff4757; }
+        .project-image-container img { cursor: pointer; }
+
+        /* Web project specific tweaks */
+        .project-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.35s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .project-card:hover {
+            transform: translateY(-12px);
+            border-color: rgba(167, 139, 250, 0.4);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.45);
+        }
+
+        .project-image-container {
+            position: relative;
+            aspect-ratio: 16 / 10;
+            overflow: hidden;
+        }
+
+        .project-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .project-card:hover .project-image-container img {
+            transform: scale(1.08);
+        }
+
+        .project-info {
+            padding: 1.5rem 1.8rem;
+        }
+
+        .project-info h3 {
+            margin: 0 0 0.8rem;
+            font-size: 1.4rem;
+            color: #e0e0ff;
+        }
+
+        .project-desc {
+            color: #b0b0d0;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.2rem;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+        }
+
+        .tag {
+            background: rgba(167, 139, 250, 0.15);
+            color: #c084fc;
+            padding: 0.35rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .project-links a {
+            color: #a78bfa;
+            font-size: 1.3rem;
+            transition: all 0.3s;
+        }
+
+        .project-links a:hover {
+            color: #c084fc;
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .project-image-container { aspect-ratio: 4 / 3; }
+        }
+    </style>
+</head>
+<body class="gallery-page">  <!-- same class as gallery for consistent dark theme -->
+
+    <!-- Navigation - same as gallery -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="index.html" class="logo">CF</a>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="web-work.html" class="active">Web Work</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero - same style as gallery -->
+    <section class="page-hero">
+        <div class="page-hero-content">
+            <h1>Web Projects</h1>
+            <p>Responsive websites • UI/UX • Frontend magic • Client work & experiments</p>
+        </div>
+    </section>
+
+    <!-- Main content -->
+    <main class="gallery-container">
+        <div class="gallery-grid" id="webProjects"></div>
+
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-icon">✦</div>
+            <h2>No web projects yet...</h2>
+            <p>Time to build something beautiful! Add your first website showcase.</p>
+            <a href="contact.html" class="btn primary-btn">Let's Discuss a Project</a>
+        </div>
+    </main>
+
+    <!-- Modal - same as gallery -->
+    <div id="imageModal" class="modal">
+        <span class="modal-close">×</span>
+        <img class="modal-content" id="modalImage" alt="Project screenshot">
+    </div>
+
+    <!-- Footer - same as gallery -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a href="index.html" class="footer-logo">CF</a>
+                <p class="footer-tagline">Creative Flow — Where imagination meets pixel-perfect design</p>
+            </div>
+
+            <div class="footer-links">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="web-work.html">Web Work</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-contact">
+                <h4>Connect</h4>
+                <div class="social-icons">
+                <a href="https://www.instagram.com/_nooram__012" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://linkedin.com/in/noor-pakeeza-702584291" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://x.com/_nooram__012" target="_blank" title="Twitter/X"><i class="fab fa-twitter"></i></a>
+                <a href="https://github.com/noorpakeeza021-max" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© <span id="currentYear"></span> Creative Flow — Made with <span class="heart">❤</span> in Punajb, Pakistan</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // ── Add your web projects here ──
+        const projects = [
+            {
+                title: "E-commerce Fashion Store",
+                description: "Full responsive online shop with cart, filters & dark mode",
+                imageUrl: "fashion-store-screenshot.jpg",      // ← put your screenshot here
+                tags: ["React", "Tailwind", "Stripe"],
+                liveUrl: "https://your-fashion-site.vercel.app",
+                githubUrl: "https://github.com/yourusername/fashion-ecommerce",
+                date: "March 2026"
+            },
+            {
+                title: "Personal Portfolio v2",
+                description: "Modern dark portfolio with smooth animations & 3D elements",
+                imageUrl: "portfolio-v2.jpg",
+                tags: ["Next.js", "Framer Motion", "GSAP"],
+                liveUrl: "https://creativeflow-portfolio.vercel.app",
+                githubUrl: "https://github.com/yourusername/portfolio-v2",
+                date: "January 2026"
+            },
+            {
+                title: "Restaurant Landing Page",
+                description: "Elegant restaurant website with reservation system",
+                imageUrl: "restaurant-landing.jpg",
+                tags: ["HTML", "CSS", "JavaScript"],
+                liveUrl: "https://restaurant-demo.yourdomain.com",
+                githubUrl: "",
+                date: "November 2025"
+            }
+            // Add more projects here...
+        ];
+
+        function loadProjects() {
+            const container = document.getElementById('webProjects');
+            const emptyState = document.getElementById('emptyState');
+
+            if (projects.length === 0) {
+                emptyState.style.display = 'flex';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            container.innerHTML = '';
+
+            projects.forEach(project => {
+                const card = document.createElement('div');
+                card.className = 'project-card';
+                card.innerHTML = `
+                    <div class="project-image-container">
+                        <img src="${project.imageUrl}" alt="${project.title} screenshot" loading="lazy">
+                    </div>
+                    <div class="project-info">
+                        <h3>${project.title}</h3>
+                        <p class="project-desc">${project.description}</p>
+                        
+                        <div class="project-tags">
+                            ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+
+                        <div class="project-links">
+                            ${project.liveUrl ? `<a href="${project.liveUrl}" target="_blank" title="Live Demo"><i class="fas fa-external-link-alt"></i></a>` : ''}
+                            ${project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" title="View Code"><i class="fab fa-github"></i></a>` : ''}
+                        </div>
+
+                        <div class="design-meta" style="margin-top:1rem; font-size:0.9rem; color:#888;">
+                            <span>${project.date}</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            // Modal for enlarged screenshot
+            document.querySelectorAll('.project-image-container img').forEach(img => {
+                img.addEventListener('click', () => {
+                    document.getElementById('modalImage').src = img.src;
+                    document.getElementById('imageModal').style.display = 'block';
+                });
+            });
+        }
+
+        // Close modal
+        document.getElementById('imageModal').addEventListener('click', e => {
+            if (e.target.id === 'imageModal' || e.target.classList.contains('modal-close')) {
+                e.currentTarget.style.display = 'none';
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', loadProjects);
+    </script>
+</body>
+</html>

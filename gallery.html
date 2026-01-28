@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Gallery | Creative Flow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(0,0,0,0.94);
+        }
+        .modal-content {
+            max-width: 94%;
+            max-height: 94vh;
+            object-fit: contain;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 48px;
+            cursor: pointer;
+        }
+        .modal-close:hover { color: #ff4757; }
+        .design-image-container img { cursor: pointer; }
+    </style>
+</head>
+<body class="gallery-page">
+
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="index.html" class="logo">CF</a>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="gallery.html" class="active">Gallery</a></li>
+                <li><a href="web-work.html">Web Work</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="page-hero">
+        <div class="page-hero-content">
+            <h1>My Design Gallery</h1>
+            <p>Daily creations • Experiments • Passion projects</p>
+        </div>
+    </section>
+
+    <main class="gallery-container">
+        <div class="gallery-grid" id="gallery"></div>
+
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-icon">✦</div>
+            <h2>No designs yet...</h2>
+            <p>Start sharing your creativity! Your first masterpiece is waiting.</p>
+            <a href="upload.html" class="btn primary-btn">Upload Your First Design</a>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="imageModal" class="modal">
+        <span class="modal-close">×</span>
+        <img class="modal-content" id="modalImage" alt="Enlarged artwork">
+    </div>
+
+    <footer class="main-footer">
+        <!-- same footer as index.html -->
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a href="index.html" class="footer-logo">CF</a>
+                <p class="footer-tagline">Creative Flow — Where imagination meets pixel-perfect design</p>
+            </div>
+            <div class="footer-links">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="web-work.html">Web Work</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>Connect</h4>
+                <div class="social-icons">
+                <a href="https://www.instagram.com/_nooram__012" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://linkedin.com/in/noor-pakeeza-702584291" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://x.com/_nooram__012" target="_blank" title="Twitter/X"><i class="fab fa-twitter"></i></a>
+                <a href="https://github.com/noorpakeeza021-max" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© <span id="currentYear"></span> Creative Flow — Made with <span class="heart">❤</span> in Punajb, Pakistan</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // ── Your artworks (just add/edit URLs here) ──
+        const designs = [
+            {
+                title: "3D work",
+                description: "Late night vibes with heavy cyan and magenta accents",
+                imageUrl: "3D manipulation.jpg", // ← change this
+                date: "15 Jan 2026"
+            },
+            {
+                title: "Clippig work",
+                description: "Less is more – clean typography experiment",
+                imageUrl: "leave.jpg", // ← change this
+                date: "12 Jan 2026"
+            },
+           {
+                title: "Poster",
+                description: "Less is more – clean typography experiment",
+                imageUrl: "POSTER2-01.jpg", // ← change this
+                date: "12 Jan 2026"
+            },
+            {
+                title: "Passport Picture",
+                description: "Less is more – clean typography experiment",
+                imageUrl: "kamran-ch-.jpg", // ← change this
+                date: "12 Jan 2026"
+            },
+            {
+                title: "Photo Retouching",
+                description: "Less is more – clean typography experiment",
+                imageUrl: "pexels-anna978.jpg", // ← change this
+                date: "12 Jan 2026"
+            },
+            {
+                title: "",
+                description: "Less is more – clean typography experiment",
+                imageUrl: "360_fkPAfNYnEYtpQmsa5y.jpg", // ← change this
+                date: "12 Jan 2026"
+            },
+            {
+                title: "Perfume Design",
+                description: "Less is more – clean typography experiment",
+                imageUrl: "perfume.jpg", // ← change this
+                date: "12 Jan 2026"
+            },
+            {
+                title: "Botique logo",
+                description: "Less is more – clean typography experiment",
+                imageUrl: "B-LOGO-01.jpg", // ← change this
+                date: "12 Jan 2026"
+            },
+            {
+                title: "Minimalist Poster",
+                description: "Less is more – clean typography experiment",
+                imageUrl: "shape builder-01.jpg", // ← change this
+                date: "12 Jan 2026"
+            },
+            {
+                title: "Minimalist Poster",
+                description: "Less is more – clean typography experiment",
+                imageUrl: "kaba-01.jpg", // ← change this
+                date: "12 Jan 2026"
+            },
+            {
+                title: "Minimalist Poster",
+                description: "Less is more – clean typography experiment",
+                imageUrl: "micky mouse.jpg", // ← change this
+                date: "12 Jan 2026"
+            },
+            {
+                title: "Clone Stamp",
+                description: "Less is more – clean typography experiment",
+                imageUrl: "istockphoto-482267382-612x612 (2).jpg", // ← change this
+                date: "12 Jan 2026"
+            },
+            {
+                title: "Minimalist Poster",
+                description: "Less is more – clean typography experiment",
+                imageUrl: "tracing-01.jpg", // ← change this
+                date: "12 Jan 2026"
+            },
+            {
+                title: "Minimalist Poster",
+                description: "Less is more – clean typography experiment",
+                imageUrl: "how-to-draw-a-carrot.jpg", // ← change this
+                date: "12 Jan 2026"
+            },
+            {
+                title: "Minimalist Poster",
+                description: "Less is more – clean typography experiment",
+                imageUrl: "=pure drop car-01.jpg", // ← change this
+                date: "12 Jan 2026"
+            },
+            {
+                title: "Minimalist Poster",
+                description: "Less is more – clean typography experiment",
+                imageUrl: "=pure drop car-02.jpg", // ← change this
+                date: "12 Jan 2026"
+            },
+            {
+                title: "Minimalist Poster",
+                description: "Less is more – clean typography experiment",
+                imageUrl: "POSTER-01.png", // ← change this
+                date: "12 Jan 2026"
+            },
+            {
+                title: "Minimalist Poster",
+                description: "Less is more – clean typography experiment",
+                imageUrl: "perri-lancas.jpg", // ← change this
+                date: "12 Jan 2026"
+            },
+            {
+                title: "Minimalist Poster",
+                description: "Less is more – clean typography experiment",
+                imageUrl: "SLICED.jpg", // ← change this
+                date: "12 Jan 2026"
+            },
+            {
+                title: "Minimalist Poster",
+                description: "Less is more – clean typography experiment",
+                imageUrl: "oliver-dumoulin-unsplash.jpg", // ← change this
+                date: "12 Jan 2026"
+            },
+        ];
+
+        function loadGallery() {
+            const gallery = document.getElementById('gallery');
+            const emptyState = document.getElementById('emptyState');
+
+            if (designs.length === 0) {
+                emptyState.style.display = 'flex';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            gallery.innerHTML = '';
+
+            designs.forEach(design => {
+                const card = document.createElement('div');
+                card.className = 'design-card';
+                card.innerHTML = `
+                    <div class="design-image-container">
+                        <img src="${design.imageUrl}" alt="${design.title}" loading="lazy">
+                    </div>
+                    <div class="design-info">
+                        <h3>${design.title}</h3>
+                        <p class="design-desc">${design.description}</p>
+                        <div class="design-meta">
+                            <span>${design.date}</span>
+                        </div>
+                    </div>
+                `;
+                gallery.appendChild(card);
+            });
+
+            // Open modal on image click
+            document.querySelectorAll('.design-image-container img').forEach(img => {
+                img.addEventListener('click', () => {
+                    document.getElementById('modalImage').src = img.src;
+                    document.getElementById('imageModal').style.display = 'block';
+                });
+            });
+        }
+
+        // Close modal
+        document.getElementById('imageModal').addEventListener('click', e => {
+            if (e.target.id === 'imageModal' || e.target.classList.contains('modal-close')) {
+                e.currentTarget.style.display = 'none';
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', loadGallery);
+    </script>
+</body>
+</html> 
